@@ -99,7 +99,7 @@ function! Screen_Session_Names(A, L, P)
 endfunction
 
 " Set GNU Screen related parameters.
-function Screen_Vars()
+function! Screen_Vars()
   if !exists("g:screen_sessionname") || !exists("g:screen_windowname")
     let g:screen_sessionname = $STY
     let g:screen_windowname = "0"
