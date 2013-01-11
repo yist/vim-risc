@@ -18,7 +18,7 @@ let g:risc_max_history = 5
 
 
 " Send command to Screen.
-function Send_To_Screen(text)
+function! Send_To_Screen(text)
   if (a:text == "")
     echo "Empty string won't be sent to Screen"
     return
@@ -44,7 +44,7 @@ function Send_To_Screen(text)
 endfunction
 
 " Update list of historical commands.
-function Update_Cmd_History(cmd)
+function! Update_Cmd_History(cmd)
   if (get(g:risc_cmd_list, -1, "") != a:cmd)
     if len(g:risc_cmd_list) == g:risc_max_history
       unlet g:risc_cmd_list[0]
@@ -54,7 +54,7 @@ function Update_Cmd_History(cmd)
 endfunction
 
 " Per word file path completion.
-function PerWordFileComplete(A, L, P)
+function! PerWordFileComplete(A, L, P)
   let to_complete = a:A
   let rest = ''
   let pos = strridx(a:A, ' ')
@@ -67,20 +67,20 @@ function PerWordFileComplete(A, L, P)
 endfunction
 
 " Send a new one-line command to Screen.
-function Send_One_Line_Cmd()
+function! Send_One_Line_Cmd()
   let g:one_line_cmd = input("$ ", "", "custom,PerWordFileComplete")
   call Send_To_Screen(g:one_line_cmd . "\n")
 endfunction
 
 " Send the most recent command to Screen.
-function Send_Most_Recent_Cmd()
+function! Send_Most_Recent_Cmd()
   if len(g:risc_cmd_list) > 0
     call Send_To_Screen(g:risc_cmd_list[-1])
   endif
 endfunction
 
 " Ask to choose from a list historical command to send to Screen.
-function Send_Historical_Cmd()
+function! Send_Historical_Cmd()
   let g:cmd_choices = ['Select historical command:']
   let index = 1
   while index <= len(g:risc_cmd_list)
@@ -94,7 +94,7 @@ function Send_Historical_Cmd()
 endfunction
 
 " Find GNU Screen names.
-function Screen_Session_Names(A, L, P)
+function! Screen_Session_Names(A, L, P)
   return system("screen -ls | awk '/Attached/ {print $1}'")
 endfunction
 
@@ -110,7 +110,7 @@ function Screen_Vars()
 endfunction
 
 " Show list of historical commmands.
-function Show_Cmd_History()
+function! Show_Cmd_History()
   if exists("g:risc_cmd_list")
     let index = 1
     while index <= len(g:risc_cmd_list)
@@ -123,13 +123,13 @@ function Show_Cmd_History()
 endfunction
 
 " Compact multi-line command into a single line one.
-function Compact_Cmd(cmd)
+function! Compact_Cmd(cmd)
   let cmp_cmd = substitute(a:cmd, " *\\\\ *\n *", ' ', 'g')
   return substitute(cmp_cmd, "\n", ' ¶ ' , 'g')
 endfunction
 
 " Show compact list of historical commands.
-function Show_Compact_Cmd_History()
+function! Show_Compact_Cmd_History()
   if exists("g:risc_cmd_list")
     let index = 1
     while index <= len(g:risc_cmd_list)
