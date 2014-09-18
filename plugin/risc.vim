@@ -35,9 +35,12 @@ function! Send_To_Screen(text)
   echohl WarningMsg
   if input("(Y/n?) ", "Y") == "Y"
     call Update_Cmd_History(a:text)
-    let cur_cmd = substitute(a:text, "'", "'\\\\''", 'g')
-    let cur_cmd = substitute(cur_cmd, "$", "\$", 'g')
-    echo system("screen -S " . g:screen_sessionname . " -p " . g:screen_windowname . " -X stuff '" . cur_cmd . "'")
+    let cur_cmd = substitute(a:text, "'", "'\\\\''", 'g')                                                                                                                    
+    let cur_cmd = substitute(cur_cmd, '\$', '\\$', 'g')                            
+    " In case last char is "\" and mess with '                                     
+    let cur_cmd = substitute(cur_cmd, '\\$', '\\\\', 'g')                          
+    let sys_cmd = "screen -S " . g:screen_sessionname . " -p " . g:screen_windowname . " -X stuff '" . cur_cmd . "'"
+    echo system(sys_cmd)
   else
     let tmp = input("Cancelled", "")
   endif
