@@ -36,6 +36,7 @@ function! Send_To_Screen(text)
   if input("(Y/n?) ", "Y") == "Y"
     call Update_Cmd_History(a:text)
     let cur_cmd = substitute(a:text, "'", "'\\\\''", 'g')
+    let cur_cmd = substitute(cur_cmd, "$", "\$", 'g')
     echo system("screen -S " . g:screen_sessionname . " -p " . g:screen_windowname . " -X stuff '" . cur_cmd . "'")
   else
     let tmp = input("Cancelled", "")
